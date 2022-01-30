@@ -1,4 +1,4 @@
 # feodorov-uprkach-lab2
-[![CMake](https://github.com/z8432k/feodorov-uprkach-lab2/actions/workflows/cmake.yml/badge.svg)](https://github.com/z8432k/feodorov-uprkach-lab2/actions/workflows/cmake.yml)
+[![Create and publish a Docker image](https://github.com/z8432k/feodorov-uprkach-lab2/actions/workflows/docker-image.yml/badge.svg)](https://github.com/z8432k/feodorov-uprkach-lab2/actions/workflows/docker-image.yml)
 
 Упр. качеством. Лабораторная работа N2 Вариант 1
