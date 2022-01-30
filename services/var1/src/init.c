@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <jansson.h>
+#include <psql.h>
 
 
 int main(int argc, char* argv[]) {
