@@ -1,3 +1,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE  ON)
 
-add_executable(list.cgi list.c)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
+
+add_executable(list.cgi src/list.c)
+add_executable(add.cgi src/add.c)
+add_executable(del.cgi src/del.c)

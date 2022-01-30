@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(cgi C CXX)
+project(cgi C)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_EXTENSIONS ON)
@@ -22,15 +22,7 @@ if(CMAKE_COMPILER_IS_GNUCC)
     message(STATUS "Detected GNU compiler. Using specific flags.")
     set(CMAKE_C_FLAGS_DEBUG "-pipe -Wall -Wextra -Wpedantic -O0 -ggdb")
     set(CMAKE_C_FLAGS_RELEASE "-pipe -march=native -O3")
-    set(CMAKE_C_FLAGS_DEBUG "-pipe -Wall -Wextra -Wpedantic -O0 -ggdb")
-    set(CMAKE_C_FLAGS_RELEASE "-pipe -march=native -O3")
     set(CMAKE_C_FLAGS "-Wno-unused-parameter")
 endif()
-
-find_package(PkgConfig REQUIRED)
-
-pkg_check_modules(GLIB2 REQUIRED glib-2.0)
-pkg_check_modules(JANSSON REQUIRED jansson)
-
 
 add_subdirectory(services)
