@@ -17,11 +17,7 @@ static void do_exit(PGconn *conn) {
     exit(1);
 }
 
-static void pg_normal_exit(PGresult *res) {
-    if(res != NULL) {
-        PQclear(res);
-    }
-
+void spg_exit() {
     if(connection != NULL) {
         PQfinish(connection);
     }
@@ -66,14 +62,16 @@ GPtrArray* spg_get_distinct_col(const gchar* colName, const gchar* tbl) {
 
         for (gsize i = 0; i < rows; i++) {
             GString *row = g_string_new(NULL);
-            g_string_assign(row, PQgetvalue(res, 0, 0));
+            g_string_assign(row, PQgetvalue(res, i, 0));
             g_ptr_array_add(data, row);
         }
-
-        pg_normal_exit(res);
     }
 
     g_string_free(sql, TRUE);
+
+    if(res != NULL) {
+        PQclear(res);
+    }
 
     return data;
 }
