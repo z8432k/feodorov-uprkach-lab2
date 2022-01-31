@@ -7,5 +7,6 @@
 void spg_set_options(const gchar *h, const gchar *d, const gchar *u, const gchar *p);
 void spg_exit();
 GPtrArray* spg_get_distinct_col(const gchar* colName, const gchar* tbl);
+GPtrArray* spg_get_all(const gchar* tbl);
 
 #endif //SIMPLEPG_H
