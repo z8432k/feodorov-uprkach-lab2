@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <glib.h>
 #include <jansson.h>
 #include <simplepg.h>

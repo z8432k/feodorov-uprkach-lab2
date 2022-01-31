@@ -121,3 +121,30 @@ GPtrArray* spg_get_all(const gchar* tbl) {
 
     return data;
 }
+
+GPtrArray* spg_search(const gchar* tbl, const GPtrArray *conds) {
+    PGconn *conn = pgGetConnection();
+    GPtrArray *data;
+
+    GString *sql = g_string_new("");
+    g_string_append_printf(sql, "SELECT DISTINCT * FROM %s;", tbl);
+
+    PGresult *res = PQexec(conn, sql->str);
+
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        g_printerr("%s", PQerrorMessage(connection));
+        PQclear(res);
+        do_exit(conn);
+    }
+    else {
+        data = resp2GPtrArray(res);
+    }
+
+    g_string_free(sql, TRUE);
+
+    if(res != NULL) {
+        PQclear(res);
+    }
+
+    return data;
+}
