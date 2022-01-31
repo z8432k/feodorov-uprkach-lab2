@@ -53,9 +53,27 @@ int main(int argc, char* argv[]) {
 
     // Make SQL req
 
-    spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
-
     GPtrArray *conds = g_ptr_array_new();
+
+    GPtrArray *cond = g_ptr_array_new();
+    g_ptr_array_add(cond, "source");
+    g_ptr_array_add(cond, &req->source);
+    g_ptr_array_add(cond, (void *) SPG_EQ);
+    g_ptr_array_add(conds, cond);
+
+    cond = g_ptr_array_new();
+    g_ptr_array_add(cond, "target");
+    g_ptr_array_add(cond, &req->target);
+    g_ptr_array_add(cond, (void *) SPG_EQ);
+    g_ptr_array_add(conds, cond);
+
+    cond = g_ptr_array_new();
+    g_ptr_array_add(cond, "klass");
+    g_ptr_array_add(cond, &req->klass);
+    g_ptr_array_add(cond, (void *) SPG_EQ);
+    g_ptr_array_add(conds, cond);
+
+    spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
 
     json_t *rows, *jstr;
     rows = json_array();
@@ -76,6 +94,8 @@ int main(int argc, char* argv[]) {
 
     // Dump JSON string
     gchar *jsonStr = json_dumps(rows, JSON_INDENT(2));
+
+    // TODO: Free conds mem
 
     json_decref(json);
     g_free(req);
