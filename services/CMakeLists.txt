@@ -1,5 +1,5 @@
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE  ON)
-set(CMAKE_EXE_LINKER_FLAGS "-static")
+# set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 find_package(PkgConfig REQUIRED)
 

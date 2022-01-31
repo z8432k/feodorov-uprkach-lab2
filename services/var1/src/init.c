@@ -8,6 +8,8 @@
 int main(int argc, char* argv[]) {
     printf("Content-type: text/json\n\n");
 
+    GPtrArray *collData = getDistinctCol("source");
+
     char* json;
 
 

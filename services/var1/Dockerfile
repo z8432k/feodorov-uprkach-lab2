@@ -1,4 +1,4 @@
-FROM httpd:2.4-alpine
+FROM httpd:2.4
 
 EXPOSE 80/tcp
 

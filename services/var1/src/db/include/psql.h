@@ -4,6 +4,6 @@
 #include <postgresql/libpq-fe.h>
 #include <glib.h>
 
-GArray * getDistinctCol(gchar* colName);
+GPtrArray * getDistinctCol(const gchar* colName);
 
 #endif //CGI_PSQL_H
