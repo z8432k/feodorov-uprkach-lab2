@@ -5,7 +5,11 @@
 #include <simplepg.h>
 #include <string.h>
 
-
+typedef struct {
+    const gchar *source;
+    const gchar *target;
+    const gchar *klass;
+} SearchReq;
 
 int main(int argc, char* argv[]) {
     gchar *method = getenv("REQUEST_METHOD");
@@ -33,11 +37,23 @@ int main(int argc, char* argv[]) {
 
 
     // Decode json
+    json_t *json = json_loads(jsonData->str, 0, NULL);
+    g_string_free(jsonData, TRUE);
 
+    SearchReq *req = g_new(SearchReq, 1);
 
+    json_t *value = json_object_get(json, "source");
+    req->source = json_string_value(value);
+
+    value = json_object_get(json, "target");
+    req->target = json_string_value(value);
+
+    value = json_object_get(json, "klass");
+    req->klass = json_string_value(value);
+
+    // Make SQL req
 
     spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
-
 
     GPtrArray *conds = g_ptr_array_new();
 
@@ -59,12 +75,13 @@ int main(int argc, char* argv[]) {
     g_ptr_array_free(data, TRUE);
 
     // Dump JSON string
-    gchar *json = json_dumps(rows, JSON_INDENT(2));
+    gchar *jsonStr = json_dumps(rows, JSON_INDENT(2));
 
-    json_decref(rows);
+    json_decref(json);
+    g_free(req);
     spg_exit();
 
-    printf("%s\n", json);
+    printf("%s\n", jsonStr);
 
     return 0;
 }
