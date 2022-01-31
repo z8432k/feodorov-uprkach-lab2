@@ -4,6 +4,7 @@
 #include <jansson.h>
 #include <simplepg.h>
 #include <string.h>
+#include <locale.h>
 
 typedef struct {
     const gchar *source;
@@ -12,6 +13,8 @@ typedef struct {
 } SearchReq;
 
 int main(int argc, char* argv[]) {
+    setlocale(LC_ALL, "");
+
     gchar *method = getenv("REQUEST_METHOD");
 
     if (strncmp("POST", method, 4) != 0) {

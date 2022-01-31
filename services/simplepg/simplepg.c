@@ -140,7 +140,7 @@ GPtrArray* spg_search(const gchar* tbl, const GPtrArray *conds) {
             cond = g_ptr_array_index(conds, i);
             col = g_ptr_array_index(cond, 0);
             val = g_ptr_array_index(cond, 1);
-            g_string_append_printf(where, " %s = \"%s\"", col, val);
+            g_string_append_printf(where, " %s = '%s' ", col, val);
         }
     }
 
