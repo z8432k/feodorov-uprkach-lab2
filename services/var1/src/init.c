@@ -2,16 +2,17 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <jansson.h>
-#include <psql.h>
+#include <simplepg.h>
 
 
 int main(int argc, char* argv[]) {
     printf("Content-type: text/json\n\n");
 
-    GPtrArray *collData = getDistinctCol("source");
+    spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
+
+    GPtrArray *collData = spg_get_distinct_col("source", "desk");
 
     char* json;
-
 
     json_t *arr, *obj, *field;
     arr = json_array();

@@ -16,5 +16,5 @@ link_libraries(
         ${JANSSON_LDFLAGS}
 )
 
-
+add_subdirectory(simplepg)
 add_subdirectory(var1)
