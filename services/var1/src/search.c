@@ -21,6 +21,21 @@ int main(int argc, char* argv[]) {
 
     printf("Content-type: text/json\n\n");
 
+    gchar *cLength = getenv("CONTENT_LENGTH");
+    gsize csize = strtol(cLength, NULL, 10);
+
+    // Read json
+    gchar *buff = (gchar *) g_malloc(csize);
+    fgets(buff, (int) csize, stdin);
+    GString *jsonData = g_string_new("");
+    g_string_append(jsonData, buff);
+    g_free(buff);
+
+
+    // Decode json
+
+
+
     spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
 
 
