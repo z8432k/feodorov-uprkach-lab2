@@ -57,19 +57,19 @@ int main(int argc, char* argv[]) {
 
     GPtrArray *cond = g_ptr_array_new();
     g_ptr_array_add(cond, "source");
-    g_ptr_array_add(cond, &req->source);
+    g_ptr_array_add(cond, req->source);
     g_ptr_array_add(cond, (void *) SPG_EQ);
     g_ptr_array_add(conds, cond);
 
     cond = g_ptr_array_new();
     g_ptr_array_add(cond, "target");
-    g_ptr_array_add(cond, &req->target);
+    g_ptr_array_add(cond, req->target);
     g_ptr_array_add(cond, (void *) SPG_EQ);
     g_ptr_array_add(conds, cond);
 
     cond = g_ptr_array_new();
     g_ptr_array_add(cond, "klass");
-    g_ptr_array_add(cond, &req->klass);
+    g_ptr_array_add(cond, req->klass);
     g_ptr_array_add(cond, (void *) SPG_EQ);
     g_ptr_array_add(conds, cond);
 

@@ -127,7 +127,24 @@ GPtrArray* spg_search(const gchar* tbl, const GPtrArray *conds) {
     GPtrArray *data;
 
     GString *sql = g_string_new("");
-    g_string_append_printf(sql, "SELECT DISTINCT * FROM %s;", tbl);
+    GString *where = g_string_new(" WHERE ");
+
+    GPtrArray *cond;
+    gchar *col, *val;
+    if (conds->len > 0) {
+        for (gsize i = 0; i < conds->len; i++) {
+            if (i > 0) {
+                g_string_append(where, " AND ");
+            }
+
+            cond = g_ptr_array_index(conds, i);
+            col = g_ptr_array_index(cond, 0);
+            val = g_ptr_array_index(cond, 1);
+            g_string_append_printf(where, " %s = \"%s\"", col, val);
+        }
+    }
+
+    g_string_append_printf(sql, "SELECT * FROM %s %s;", tbl, where->str);
 
     PGresult *res = PQexec(conn, sql->str);
 
