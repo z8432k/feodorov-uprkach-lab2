@@ -7,7 +7,8 @@ function loadData(data) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(JSON.parse(data))
-  });
+  })
+    .then(() => document.location.reload());
 }
 
 export default function Admin() {

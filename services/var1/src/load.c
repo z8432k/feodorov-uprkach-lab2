@@ -33,8 +33,6 @@ int main(int argc, char* argv[]) {
         exit(EXIT_SUCCESS);
     }
 
-    printf("Content-type: text/json\n\n");
-
     gsize csize = strtol(getenv("CONTENT_LENGTH"), NULL, 10);
 
     // Read POST data
@@ -89,17 +87,7 @@ int main(int argc, char* argv[]) {
     spg_load("desk", cols, rows);
     spg_commit();
 
-    json_t *arr, *field;
-    arr = json_array();
-
-    field = json_string("ok");
-    json_array_append_new(arr, field);
-
-    gchar *response = json_dumps(arr, JSON_INDENT(2));
-
-    json_decref(arr);
-
-    printf("%s\n", response);
+    printf("Content-type: text/html\n\n ok\n");
 
     return 0;
 }
