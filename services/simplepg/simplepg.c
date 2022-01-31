@@ -72,7 +72,7 @@ GPtrArray* spg_get_distinct_col(const gchar* colName, const gchar* tbl) {
     PGresult *res = PQexec(conn, sql->str);
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        g_printerr("%s", PQerrorMessage(connection));
+        g_printerr("PGERROR: %s", PQerrorMessage(connection));
         PQclear(res);
         do_exit(conn);
     }
@@ -105,7 +105,7 @@ GPtrArray* spg_get_all(const gchar* tbl) {
     PGresult *res = PQexec(conn, sql->str);
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        g_printerr("%s", PQerrorMessage(connection));
+        g_printerr("PGERROR: %s", PQerrorMessage(connection));
         PQclear(res);
         do_exit(conn);
     }
@@ -149,7 +149,7 @@ GPtrArray* spg_search(const gchar* tbl, const GPtrArray *conds) {
     PGresult *res = PQexec(conn, sql->str);
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        g_printerr("%s", PQerrorMessage(connection));
+        g_printerr("PGERROR: %s", PQerrorMessage(connection));
         PQclear(res);
         do_exit(conn);
     }
@@ -164,4 +164,110 @@ GPtrArray* spg_search(const gchar* tbl, const GPtrArray *conds) {
     }
 
     return data;
+}
+
+void spg_begin() {
+    PGconn *conn = pgGetConnection();
+
+    PGresult *res = PQexec(conn, "BEGIN;");
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        g_printerr("PGERROR: %s", PQerrorMessage(connection));
+        PQclear(res);
+        do_exit(conn);
+    }
+    else {
+        if(res != NULL) {
+            PQclear(res);
+        }
+    }
+}
+
+void spg_commit() {
+    PGconn *conn = pgGetConnection();
+
+    PGresult *res = PQexec(conn, "COMMIT;");
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        g_printerr("PGERROR: %s", PQerrorMessage(connection));
+        PQclear(res);
+        do_exit(conn);
+    }
+    else {
+        if(res != NULL) {
+            PQclear(res);
+        }
+    }
+}
+
+void spg_truncate(const gchar* tbl) {
+    PGconn *conn = pgGetConnection();
+
+    GString *sql = g_string_new("");
+    g_string_append_printf(sql, "TRUNCATE %s CASCADE;", tbl);
+
+    PGresult *res = PQexec(conn, sql->str);
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        g_printerr("PGERROR: %s", PQerrorMessage(connection));
+        PQclear(res);
+        do_exit(conn);
+    }
+    else {
+        g_string_free(sql, TRUE);
+
+        if(res != NULL) {
+            PQclear(res);
+        }
+    }
+}
+
+void spg_load(const gchar* tbl, GPtrArray *collumns, GPtrArray *rows) {
+    PGconn *conn = pgGetConnection();
+
+    GString *sql = g_string_new("");
+    g_string_append_printf(sql, "INSERT INTO %s (", tbl);
+
+    for (size_t i = 0; i < collumns->len; i++) {
+        if (i > 0) {
+            g_string_append(sql, ", ");
+        }
+        gchar *col = g_ptr_array_index(collumns, i);
+        g_string_append(sql, col);
+    }
+    g_string_append(sql, ") ");
+    g_string_append(sql, "VALUES ");
+
+    for (size_t r = 0; r < rows->len; r++) {
+        GPtrArray *cols = g_ptr_array_index(rows, r);
+        if (r > 0) {
+            g_string_append(sql, ", ");
+        }
+        for (size_t c = 0; c < cols->len; c++) {
+            if (c == 0) {
+                g_string_append(sql, "(");
+            }
+            if (c > 0) {
+                g_string_append(sql, ", ");
+            }
+            gchar *col = g_ptr_array_index(cols, c);
+            g_string_append_printf(sql, "'%s'", col);
+        }
+        g_string_append(sql, ")");
+    }
+
+    PGresult *res = PQexec(conn, sql->str);
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        g_printerr("PGERROR: %s", PQerrorMessage(connection));
+        PQclear(res);
+        do_exit(conn);
+    }
+    else {
+        g_string_free(sql, TRUE);
+
+        if(res != NULL) {
+            PQclear(res);
+        }
+    }
 }

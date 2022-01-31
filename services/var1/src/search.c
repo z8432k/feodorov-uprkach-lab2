@@ -5,7 +5,6 @@
 #include <simplepg.h>
 #include <string.h>
 #include <locale.h>
-#include <error.h>
 
 typedef struct {
     const gchar *source;

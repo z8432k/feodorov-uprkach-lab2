@@ -18,5 +18,9 @@ void spg_exit();
 GPtrArray* spg_get_distinct_col(const gchar* colName, const gchar* tbl);
 GPtrArray* spg_get_all(const gchar* tbl);
 GPtrArray* spg_search(const gchar* tbl, const GPtrArray *conds);
+void spg_begin();
+void spg_commit();
+void spg_truncate(const gchar* tbl);
+void spg_load(const gchar* tbl, GPtrArray *cols, GPtrArray *rows);
 
 #endif //SIMPLEPG_H
