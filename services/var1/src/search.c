@@ -3,10 +3,22 @@
 #include <glib.h>
 #include <jansson.h>
 #include <simplepg.h>
+#include <string.h>
 
 
 
 int main(int argc, char* argv[]) {
+    gchar *method = getenv("REQUEST_METHOD");
+
+    if (strncmp("POST", method, 4) != 0) {
+        printf("Status: 400 Bad request.\n");
+        printf("Content-type: text/html\n\n");
+
+        printf("Bad request.\n");
+
+        exit(EXIT_SUCCESS);
+    }
+
     printf("Content-type: text/json\n\n");
 
     spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");

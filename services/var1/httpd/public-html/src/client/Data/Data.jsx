@@ -63,8 +63,25 @@ export default function Data() {
   };
   delete fields.rows;
 
+  function sendForm(data) {
+    fetch("/cgi-bin/search.cgi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(rows => {
+      setInit({
+        ...init,
+        rows
+      });
+    })
+  }
+
   return (<>
-    <Form fields={fields}/>
+    <Form fields={fields} onSubmit={sendForm} />
     <br />
     <Grid header={header} data={init.rows} />
   </>);
