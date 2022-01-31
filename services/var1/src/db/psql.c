@@ -41,10 +41,10 @@ GPtrArray* getDistinctCol(const gchar* colName) {
     PGconn *conn = pgGetConnection();
     GPtrArray *data = g_ptr_array_new();
 
-    gchar *sql = "SELECT DISTINCT source FROM desk WHERE 1=1 OR '1' = $1;";
+    GString *sql = g_string_new("");
+    g_string_append_printf(sql, "SELECT DISTINCT %s FROM desk;", colName);
 
-    PGresult *res = PQexecParams(conn, sql,
-                       1, NULL, &colName, NULL, NULL, 0);
+    PGresult *res = PQexec(conn, sql->str);
 
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
         g_printerr("Data does not exist.\n");
