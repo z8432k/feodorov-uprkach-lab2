@@ -2,15 +2,6 @@ import { useEffect, useState } from "react";
 import Form from "./Form";
 import Grid from "./Grid";
 
-const data = [
-  [
-    "Row 1 col 1", "Row 1 col 2"
-  ],
-  [
-    "Row 2 col 1", "Row 2 col 2"
-  ]
-];
-
 
 const header = [
   {

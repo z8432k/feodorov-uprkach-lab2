@@ -5,12 +5,23 @@
 #include <simplepg.h>
 #include <string.h>
 #include <locale.h>
+#include <error.h>
 
 typedef struct {
     const gchar *source;
     const gchar *target;
     const gchar *klass;
 } SearchReq;
+
+void errorExit(gchar *err) {
+    printf("Status: 500 Internal error.\n");
+    printf("Content-type: text/html\n\n");
+
+    printf("Internal server error.\n");
+    g_printerr("%s", err);
+
+    exit(EXIT_FAILURE);
+}
 
 int main(int argc, char* argv[]) {
     setlocale(LC_ALL, "");
@@ -28,19 +39,24 @@ int main(int argc, char* argv[]) {
 
     printf("Content-type: text/json\n\n");
 
-    gchar *cLength = getenv("CONTENT_LENGTH");
-    gsize csize = strtol(cLength, NULL, 10);
+    gsize csize = strtol(getenv("CONTENT_LENGTH"), NULL, 10);
 
     // Read json
     gchar *buff = (gchar *) g_malloc(csize);
-    fgets(buff, (int) csize, stdin);
+    fgets(buff, (int) csize + 1, stdin);
+
     GString *jsonData = g_string_new("");
     g_string_append(jsonData, buff);
     g_free(buff);
 
 
     // Decode json
-    json_t *json = json_loads(jsonData->str, 0, NULL);
+    json_error_t jsonErr;
+    json_t *json = json_loads(jsonData->str, 0, &jsonErr);
+    if (!json) {
+        errorExit(jsonErr.text);
+    }
+
     g_string_free(jsonData, TRUE);
 
     SearchReq *req = g_new(SearchReq, 1);
@@ -60,19 +76,19 @@ int main(int argc, char* argv[]) {
 
     GPtrArray *cond = g_ptr_array_new();
     g_ptr_array_add(cond, "source");
-    g_ptr_array_add(cond, req->source);
+    g_ptr_array_add(cond, (gpointer) req->source);
     g_ptr_array_add(cond, (void *) SPG_EQ);
     g_ptr_array_add(conds, cond);
 
     cond = g_ptr_array_new();
     g_ptr_array_add(cond, "target");
-    g_ptr_array_add(cond, req->target);
+    g_ptr_array_add(cond, (gpointer) req->target);
     g_ptr_array_add(cond, (void *) SPG_EQ);
     g_ptr_array_add(conds, cond);
 
     cond = g_ptr_array_new();
     g_ptr_array_add(cond, "klass");
-    g_ptr_array_add(cond, req->klass);
+    g_ptr_array_add(cond, (gpointer) req->klass);
     g_ptr_array_add(cond, (void *) SPG_EQ);
     g_ptr_array_add(conds, cond);
 
