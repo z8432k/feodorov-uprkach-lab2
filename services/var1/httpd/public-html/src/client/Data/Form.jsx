@@ -18,26 +18,13 @@ function Text({ label } = { label: "" }) {
   </label>);
 }
 
-export default function Form() {
-  const [init, setInit] = useState({
-    source: [],
-    target: [],
-    klass: []
-  });
-
-  useEffect(() => {
-    fetch("/cgi-bin/init.cgi")
-      .then(resp => resp.json())
-      .then(setInit);
-  }, []);
-
+export default function Form({ fields }) {
   return (<div>
     <p>Введите поисковый запрос.</p>
     <form>
-      <Select label="Откуда" options={init.source.map(o => ({ label: o, value: o }))} />&nbsp;
-      <Select label="Куда" options={init.target.map(o => ({ label: o, value: o }))} />&nbsp;
-      <Select label="Класс" options={init.klass.map(o => ({ label: o, value: o }))} />&nbsp;
-      <Text label="Дата отправл." />&nbsp;
+      <Select label="Откуда" options={fields.source.map(o => ({ label: o, value: o }))} />&nbsp;
+      <Select label="Куда" options={fields.target.map(o => ({ label: o, value: o }))} />&nbsp;
+      <Select label="Класс" options={fields.klass.map(o => ({ label: o, value: o }))} />&nbsp;
       <button>Поиск</button>
     </form>
   </div>);

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Form from "./Form";
 import Grid from "./Grid";
 
@@ -42,10 +43,29 @@ function coerceData(header = [], data = []) {
 }
 
 export default function Data() {
-  coerceData(header, data)
+  const [init, setInit] = useState({
+    source: [],
+    target: [],
+    klass: [],
+    rows: []
+  });
+
+  coerceData(header, init.rows)
+
+  useEffect(() => {
+    fetch("/cgi-bin/init.cgi")
+      .then(resp => resp.json())
+      .then(setInit);
+  }, []);
+
+  const fields = {
+    ...init
+  };
+  delete fields.rows;
 
   return (<>
-    <Form />
-    <Grid header={header} data={data} />
+    <Form fields={fields}/>
+    <br />
+    <Grid header={header} data={init.rows} />
   </>);
 }
