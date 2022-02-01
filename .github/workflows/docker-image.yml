@@ -53,7 +53,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: VAR1 - Extract metadata (tags, labels) for Docker
-        id: meta
+        id: meta_var1
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.VAR1_IMAGE_NAME }}
@@ -63,11 +63,11 @@ jobs:
         with:
           context: services/var1
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta_var1.outputs.tags }}
+          labels: ${{ steps.meta_var1.outputs.labels }}
 
       - name: VAR2 - Extract metadata (tags, labels) for Docker
-        id: meta
+        id: meta_var2
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.VAR2_IMAGE_NAME }}
@@ -77,5 +77,5 @@ jobs:
         with:
           context: services/var2
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta_var2.outputs.tags }}
+          labels: ${{ steps.meta_var2.outputs.labels }}
