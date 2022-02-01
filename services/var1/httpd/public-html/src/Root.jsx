@@ -23,10 +23,10 @@ function Root() {
     <nav>
       <ul>
         <li>
-          <a href="#" onClick={setPage.bind(null, "admin")}>Admin</a>
+          <button onClick={setPage.bind(null, "admin")}>Admin</button>
         </li>
         <li>
-          <a href="#" onClick={setPage.bind(null, "client")}>Client</a>
+          <button onClick={setPage.bind(null, "client")}>Client</button>
         </li>
       </ul>
     </nav>
