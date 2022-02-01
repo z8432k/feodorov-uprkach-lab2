@@ -18,3 +18,4 @@ link_libraries(
 
 add_subdirectory(simplepg)
 add_subdirectory(var1)
+add_subdirectory(var2)

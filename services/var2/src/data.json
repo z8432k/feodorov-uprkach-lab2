@@ -1,0 +1,37 @@
+[
+  {
+    "source": "Масква",
+    "target":"СПб",
+    "klass":"1"
+  },
+  {
+    "source": "Масква",
+    "target":"СПб",
+    "klass":"2"
+  },
+  {
+    "source": "СПб",
+    "target":"Масква",
+    "klass":"1"
+  },
+  {
+    "source": "Псков",
+    "target":"СПб",
+    "klass":"2"
+  },
+  {
+    "source": "Спб",
+    "target":"Псков",
+    "klass":"2"
+  },
+  {
+    "source": "Великие Луки",
+    "target":"СПб",
+    "klass":"3"
+  },
+  {
+    "source": "СПб",
+    "target":"Великие Луки",
+    "klass":"3"
+  }
+]
