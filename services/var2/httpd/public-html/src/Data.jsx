@@ -45,7 +45,7 @@ export default function Data() {
   coerceData(header, init.rows)
 
   useEffect(() => {
-    fetch("/cgi-bin/init2.cgi")
+    fetch("/cgi-bin/main.cgi")
       .then(resp => resp.json())
       .then(setInit);
   }, []);
@@ -56,7 +56,7 @@ export default function Data() {
   delete fields.rows;
 
   function sendForm(data) {
-    fetch("/cgi-bin/search2.cgi", {
+    fetch("/cgi-bin/find.cgi", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

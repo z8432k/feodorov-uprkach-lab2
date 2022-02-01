@@ -19,7 +19,7 @@ void errorExit(gchar *err) {
 int main(int argc, char* argv[]) {
     setlocale(LC_ALL, "");
 
-    spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
+    spg_set_options("servant.home.sky-unix.net", "mikle-sea",  "mikle-sea" , "mikle-sea");
 
 
     gchar *method = getenv("REQUEST_METHOD");
@@ -52,40 +52,32 @@ int main(int argc, char* argv[]) {
 
     g_string_free(jsonData, TRUE);
 
-
-    size_t siz = json_array_size(json);
-
     GPtrArray *rows = g_ptr_array_new();
+    GPtrArray *row = g_ptr_array_new();
 
-    json_t *item;
-    GPtrArray *row;
     const gchar *str;
-    for (size_t i = 0; i < siz; i++) {
-        row = g_ptr_array_new();
-        item = json_array_get(json, i);
+    str = json_string_value(json_object_get(json, "korabl"));
+    g_ptr_array_add(row, (gpointer) str);
 
-        str = json_string_value(json_object_get(item, "source"));
-        g_ptr_array_add(row, (gpointer) str);
+    str = json_string_value(json_object_get(json, "prichal"));
+    g_ptr_array_add(row, (gpointer) str);
 
-        str = json_string_value(json_object_get(item, "target"));
-        g_ptr_array_add(row, (gpointer) str);
+    str = json_string_value(json_object_get(json, "pribl"));
+    g_ptr_array_add(row, (gpointer) str);
 
-        str = json_string_value(json_object_get(item, "klass"));
-        g_ptr_array_add(row, (gpointer) str);
+    str = json_string_value(json_object_get(json, "ubl"));
+    g_ptr_array_add(row, (gpointer) str);
 
-        g_ptr_array_add(rows, row);
-    }
+    g_ptr_array_add(rows, row);
+
 
     GPtrArray *cols = g_ptr_array_new();
+    g_ptr_array_add(cols, "korabl");
+    g_ptr_array_add(cols, "prichal");
+    g_ptr_array_add(cols, "pribl");
+    g_ptr_array_add(cols, "ubl");
 
-    g_ptr_array_add(cols, "source");
-    g_ptr_array_add(cols, "target");
-    g_ptr_array_add(cols, "klass");
-
-    spg_begin();
-    spg_truncate("desk");
-    spg_load("desk", cols, rows);
-    spg_commit();
+    spg_load("registry", cols, rows);
 
     printf("Content-type: text/html\n\n ok\n");
 
