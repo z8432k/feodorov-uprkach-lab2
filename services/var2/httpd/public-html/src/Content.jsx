@@ -1,10 +1,10 @@
-import Admin from "./Admin";
+import Manage from "./Manage";
 import Client from "./Client";
 
 function render(page) {
   switch (page) {
     case 'admin':
-      return (<Admin />);
+      return (<Manage />);
     case 'client':
       return (<Client />);
     default:

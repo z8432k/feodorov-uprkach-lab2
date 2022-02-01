@@ -12,17 +12,15 @@ function Select({label, options, selectRef} =  { label: "", options: [] }) {
 }
 
 export default function Form({ fields, onSubmit }) {
-  const fromRef = useRef();
-  const toRef = useRef();
-  const klassRef = useRef();
+  const korablRef = useRef();
+  const prichalRef = useRef();
 
   function onFormSubmit(event) {
     event.preventDefault();
 
     onSubmit({
-      korabl: fromRef.current.value,
-      prichal: toRef.current.value,
-      klass: klassRef.current.value
+      korabl: korablRef.current.value,
+      prichal: prichalRef.current.value,
     });
   }
 
@@ -30,17 +28,14 @@ export default function Form({ fields, onSubmit }) {
     <form>
       <div className="form-fields">
         <div className="form-field">
-          <Select selectRef={fromRef} label="Откуда" options={fields.source.map(o => ({ label: o, value: o }))} />&nbsp;
+          <Select selectRef={korablRef} label="Корабль" options={fields.korabl.map(o => ({ label: o, value: o }))} />&nbsp;
         </div>
         <div className="form-field">
-          <Select selectRef={toRef} label="Куда" options={fields.target.map(o => ({ label: o, value: o }))} />&nbsp;
+          <Select selectRef={prichalRef} label="Причал" options={fields.prichal.map(o => ({ label: o, value: o }))} />&nbsp;
         </div>
         <div className="form-field">
-          <Select selectRef={klassRef} label="Класс" options={fields.klass.map(o => ({ label: o, value: o }))} />&nbsp;          
+          <button onClick={onFormSubmit}>Поиск</button>
         </div>
-        <div className="form-field">
-          <button onClick={onFormSubmit}>Поиск</button>          
-        </div>   
       </div>
     </form>
   </div>);

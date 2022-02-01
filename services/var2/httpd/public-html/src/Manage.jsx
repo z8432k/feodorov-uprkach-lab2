@@ -7,7 +7,7 @@ function Text({ label, inputRef } = { label: "" }) {
   </label>);
 }
 
-export default function Admin() {
+export default function Manage() {
   const korablRef = useRef();
   const prichalRef = useRef();
   const priblRef = useRef();

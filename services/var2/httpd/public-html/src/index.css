@@ -62,6 +62,7 @@ code {
 
 .form-fields {
   display: flex;
+  margin-bottom: 15px;
 }
 
 .form-field {

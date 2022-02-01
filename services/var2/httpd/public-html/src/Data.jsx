@@ -3,14 +3,6 @@ import Form from "./Form";
 import Grid from "./Table";
 
 
-const header = [
-  "Причал",
-  "Корабль",
-  "Прибыл",
-  "Убыл"
-];
-
-
 export default function Data() {
   const [init, setInit] = useState({
     korabl: [],
@@ -46,9 +38,16 @@ export default function Data() {
     })
   }
 
+  const clearData  = init.rows.map(r => r.slice(1));
+  const header = [
+    "Причал",
+    "Корабль",
+    "Прибыл",
+    "Убыл"
+  ];
+
   return (<>
     <Form fields={fields} onSubmit={sendForm} />
-    <br />
-    <Grid header={header} data={init.rows} />
+    <Grid header={header} data={clearData} />
   </>);
 }

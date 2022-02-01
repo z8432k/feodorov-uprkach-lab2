@@ -4,6 +4,7 @@
 #include <jansson.h>
 #include <locale.h>
 #include <simplepg.h>
+#include <string.h>
 
 
 void errorExit(gchar *err) {
