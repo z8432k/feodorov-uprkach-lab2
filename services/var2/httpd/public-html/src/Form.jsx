@@ -1,9 +1,14 @@
 import { useRef } from "react";
 
-function Select({label, options, selectRef} =  { label: "", options: [] }) {
+function Select({label, options, selectRef, hasEmpty} =  { label: "", options: [] }) {
   return (<label>
     {label}&nbsp;
-    <select ref={selectRef}>
+    <select ref={selectRef} title={label}>
+      {
+        hasEmpty
+          ? <option></option>
+          : null
+      }
       {
         options.map((o, key) => (<option key={key} value={o.value}>{o.label}</option>))
       }
@@ -28,10 +33,10 @@ export default function Form({ fields, onSubmit }) {
     <form>
       <div className="form-fields">
         <div className="form-field">
-          <Select selectRef={korablRef} label="Корабль" options={fields.korabl.map(o => ({ label: o, value: o }))} />&nbsp;
+          <Select hasEmpty={true} selectRef={korablRef} label="Корабль" options={fields.korabl.map(o => ({ label: o, value: o }))} />&nbsp;
         </div>
         <div className="form-field">
-          <Select selectRef={prichalRef} label="Причал" options={fields.prichal.map(o => ({ label: o, value: o }))} />&nbsp;
+          <Select hasEmpty={true} selectRef={prichalRef} label="Причал" options={fields.prichal.map(o => ({ label: o, value: o }))} />&nbsp;
         </div>
         <div className="form-field">
           <button onClick={onFormSubmit}>Поиск</button>

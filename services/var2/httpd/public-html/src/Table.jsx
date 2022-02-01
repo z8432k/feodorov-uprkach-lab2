@@ -25,7 +25,6 @@ function Body({ data }) {
 }
 
 export default function Table({ header, data } = { data: [], header: [] }) {
-  console.log(data)
   return (<div className="tbl-wrap">
     <table border="5" cellPadding={5} className="tbl">
       <Header header={header} />

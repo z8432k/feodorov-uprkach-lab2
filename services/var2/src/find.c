@@ -6,12 +6,6 @@
 #include <string.h>
 #include <locale.h>
 
-typedef struct {
-    const gchar *source;
-    const gchar *target;
-    const gchar *klass;
-} SearchReq;
-
 void errorExit(gchar *err) {
     printf("Status: 500 Internal error.\n");
     printf("Content-type: text/html\n\n");
@@ -58,44 +52,37 @@ int main(int argc, char* argv[]) {
 
     g_string_free(jsonData, TRUE);
 
-    SearchReq *req = g_new(SearchReq, 1);
 
-    json_t *value = json_object_get(json, "source");
-    req->source = json_string_value(value);
-
-    value = json_object_get(json, "target");
-    req->target = json_string_value(value);
-
-    value = json_object_get(json, "klass");
-    req->klass = json_string_value(value);
-
-    // Make SQL req
-
+    // Read search data
+    const gchar *field = NULL;
     GPtrArray *conds = g_ptr_array_new();
 
-    GPtrArray *cond = g_ptr_array_new();
-    g_ptr_array_add(cond, "source");
-    g_ptr_array_add(cond, (gpointer) req->source);
-    g_ptr_array_add(cond, (void *) SPG_EQ);
-    g_ptr_array_add(conds, cond);
+    json_t *value = json_object_get(json, "korabl");
+    if (value) {
+        field = json_string_value(value);
+        GPtrArray *cond = g_ptr_array_new();
+        g_ptr_array_add(cond, "korabl");
+        g_ptr_array_add(cond, (gpointer) field);
+        g_ptr_array_add(cond, (void *) SPG_EQ);
+        g_ptr_array_add(conds, cond);
+    }
 
-    cond = g_ptr_array_new();
-    g_ptr_array_add(cond, "target");
-    g_ptr_array_add(cond, (gpointer) req->target);
-    g_ptr_array_add(cond, (void *) SPG_EQ);
-    g_ptr_array_add(conds, cond);
+    value = json_object_get(json, "prichal");
+    if (value) {
+        field = json_string_value(value);
+        GPtrArray *cond = g_ptr_array_new();
+        g_ptr_array_add(cond, "prichal");
+        g_ptr_array_add(cond, (gpointer) field);
+        g_ptr_array_add(cond, (void *) SPG_EQ);
+        g_ptr_array_add(conds, cond);
+    }
 
-    cond = g_ptr_array_new();
-    g_ptr_array_add(cond, "klass");
-    g_ptr_array_add(cond, (gpointer) req->klass);
-    g_ptr_array_add(cond, (void *) SPG_EQ);
-    g_ptr_array_add(conds, cond);
-
-    spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
+    spg_set_options("servant.home.sky-unix.net", "mikle-sea",  "mikle-sea" , "mikle-sea");
 
     json_t *rows, *jstr;
     rows = json_array();
-    GPtrArray *data = spg_search("desk", conds);
+    GPtrArray *data = spg_search("registry", conds);
+
     for (guint r = 0; r < data->len; r++) {
         json_t *cols = json_array();
         GPtrArray *row = g_ptr_array_index(data, r);
@@ -113,10 +100,7 @@ int main(int argc, char* argv[]) {
     // Dump JSON string
     gchar *jsonStr = json_dumps(rows, JSON_INDENT(2));
 
-    // TODO: Free conds mem
-
     json_decref(json);
-    g_free(req);
     spg_exit();
 
     printf("%s\n", jsonStr);
