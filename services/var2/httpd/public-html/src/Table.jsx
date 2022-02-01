@@ -10,7 +10,7 @@ function Header({ header } = { header: [] }) {
   return (<thead>
     <tr>
       {
-        header.map((h, key) => (<th key={key}>{h.label}</th>))
+        header.map((h, key) => (<th key={key}>{h}</th>))
       }
     </tr>
   </thead>);

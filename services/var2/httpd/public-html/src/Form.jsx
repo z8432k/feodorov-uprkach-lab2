@@ -20,8 +20,8 @@ export default function Form({ fields, onSubmit }) {
     event.preventDefault();
 
     onSubmit({
-      source: fromRef.current.value,
-      target: toRef.current.value,
+      korabl: fromRef.current.value,
+      prichal: toRef.current.value,
       klass: klassRef.current.value
     });
   }

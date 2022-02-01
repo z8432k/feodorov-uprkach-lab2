@@ -4,45 +4,19 @@ import Grid from "./Table";
 
 
 const header = [
-  {
-    label: "Откуда"
-  },
-  {
-    label: "Куда"
-  },
-  {
-    label: "Когда"
-  },
-  {
-    label: "Класс"
-  },
-  {
-    label: "Дата"
-  }
+  "Причал",
+  "Корабль",
+  "Прибыл",
+  "Убыл"
 ];
-
-function coerceData(header = [], data = []) {
-  const cnt = header.length;
-
-  data.forEach((row) => {
-    for (let i = 0; i < cnt; i++) {
-      if (row[i] === undefined) {
-        row[i] = "";
-      }
-    }
-  });
-}
 
 
 export default function Data() {
   const [init, setInit] = useState({
-    source: [],
-    target: [],
-    klass: [],
+    korabl: [],
+    prichal: [],
     rows: []
   });
-
-  coerceData(header, init.rows)
 
   useEffect(() => {
     fetch("/cgi-bin/main.cgi")
