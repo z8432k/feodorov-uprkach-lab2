@@ -1,35 +1,61 @@
 import { useRef } from "react";
 
-function loadData(data) {
-  fetch("/cgi-bin/load.cgi", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(JSON.parse(data))
-  })
-    .then(() => document.location.reload());
+function Text({ label, inputRef } = { label: "" }) {
+  return (<label>
+    <span>{label}</span>
+    <input ref={inputRef}type="text" />
+  </label>);
 }
 
 export default function Admin() {
-  const inputRef = useRef();
+  const korablRef = useRef();
+  const prichalRef = useRef();
+  const priblRef = useRef();
+  const ublRef = useRef();
 
-  function onUpload(event) {
+  function onSave(event) {
     event.preventDefault();
-    const { current: { files: [ file ] } } = inputRef;
 
-    file.text().then(loadData);
+    const { current: { value: korabl } } = korablRef;
+    const { current: { value: prichal } } = prichalRef;
+    const { current: { value: pribl } } = priblRef;
+    const { current: { value: ubl } } = ublRef;
+
+    fetch("/cgi-bin/save.cgi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        korabl,
+        prichal,
+        pribl,
+        ubl
+      })
+    })
+      .then(() => document.location.reload());
   }
 
   return (<section>
-    <h2>Administration</h2>
-    <hr />
+    <h2>Manage</h2>
     <form>
-      <label>
-        JSON data file &nbsp;
-        <input ref={inputRef} type="file" />
-      </label>
-      <button onClick={onUpload}>Upload data</button>
+      <div className="form-add-fields">
+        <div className="form-add-field">
+          <Text inputRef={korablRef} label="Корабль" />
+        </div>
+        <div className="form-add-field">
+          <Text inputRef={prichalRef} label="Причал" />
+        </div>
+        <div className="form-add-field">
+          <Text inputRef={priblRef} label="Прибыл" />
+        </div>
+        <div className="form-add-field">
+        <Text inputRef={ublRef} label="Убыл" />
+        </div>
+        <div className="form-add-field">
+          <button onClick={onSave}>Сохранить</button>
+        </div>
+      </div>
     </form>
   </section>
   );

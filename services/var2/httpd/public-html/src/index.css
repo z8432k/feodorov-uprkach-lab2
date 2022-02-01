@@ -68,3 +68,22 @@ code {
   flex-grow: 1;
 }
 
+.form-add-fields {
+  display: flex;
+  flex-direction: column;
+  background-color: lightskyblue;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.form-add-field {
+  flex-grow: 1;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.form-add-field label span {
+  display: block;
+  float: left;
+  min-width: 100px;
+}
