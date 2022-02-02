@@ -6,6 +6,8 @@
 #include <string.h>
 #include <locale.h>
 
+#include "common.h"
+
 typedef struct {
     const gchar *source;
     const gchar *target;
@@ -97,27 +99,13 @@ int main(int argc, char* argv[]) {
 
     spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
 
-    json_t *rows, *jstr;
-    rows = json_array();
+    json_t *rows = json_array();
     GPtrArray *data = spg_search("desk", conds);
-    for (guint r = 0; r < data->len; r++) {
-        json_t *cols = json_array();
-        GPtrArray *row = g_ptr_array_index(data, r);
-        for (guint c = 0; c < row->len; c++) {
-            GString *str = g_ptr_array_index(row, c);
-            jstr = json_string(str->str);
-            json_array_append_new(cols, jstr);
-            g_string_free(str, TRUE);
-        }
-        json_array_append_new(rows, cols);
-        g_ptr_array_free(row, TRUE);
-    }
+
+    garray_to_json_array(data, rows);
     g_ptr_array_free(data, TRUE);
 
-    // Dump JSON string
     gchar *jsonStr = json_dumps(rows, JSON_INDENT(2));
-
-    // TODO: Free conds mem
 
     json_decref(json);
     g_free(req);

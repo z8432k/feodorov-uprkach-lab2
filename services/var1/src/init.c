@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <simplepg.h>
 #include <glib.h>
 #include <jansson.h>
-#include <simplepg.h>
+
+#include "common.h"
 
 int main(int argc, char* argv[]) {
     printf("Content-type: text/json\n\n");
@@ -49,18 +51,9 @@ int main(int argc, char* argv[]) {
 
     json_t *rows = json_array();
     data = spg_get_all("desk");
-    for (guint r = 0; r < data->len; r++) {
-        json_t *cols = json_array();
-        GPtrArray *row = g_ptr_array_index(data, r);
-        for (guint c = 0; c < row->len; c++) {
-            GString *str = g_ptr_array_index(row, c);
-            jstr = json_string(str->str);
-            json_array_append_new(cols, jstr);
-            g_string_free(str, TRUE);
-        }
-        json_array_append_new(rows, cols);
-        g_ptr_array_free(row, TRUE);
-    }
+
+    garray_to_json_array(data, rows);
+
     json_object_set_new(obj, "rows", rows);
     g_ptr_array_free(data, TRUE);
 
