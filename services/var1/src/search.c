@@ -91,6 +91,10 @@ int main(int argc, char* argv[]) {
     g_ptr_array_add(cond, (void *) SPG_EQ);
     g_ptr_array_add(conds, cond);
 
+    if (strlen(req->klass) == 0 || strlen(req->target) ==0 || strlen(req->source) == 0) {
+        errorExit("Wrong search req");
+    }
+
     spg_set_options("servant.home.sky-unix.net", "alex-cgi",  "alex-cgi" , "alex-cgi-pass");
 
     json_t *rows, *jstr;

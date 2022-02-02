@@ -4,7 +4,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 pkg_check_modules(PGSQL REQUIRED libpq)
 
 add_library(simplepg STATIC simplepg.c)
-# target_compile_options(simplepg PUBLIC "-m32")
 
 target_link_libraries(simplepg
         PUBLIC
